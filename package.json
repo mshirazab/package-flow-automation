@@ -1,0 +1,50 @@
+{
+  "name": "package-flow-automation",
+  "version": "1.2.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "commit": "git-cz",
+    "lint": "eslint src/**",
+    "validate": "yarn lint",
+    "prerelease": "yarn validate && yarn commit",
+    "release": "standard-version -a",
+    "postrelease": "yarn release:tags",
+    "release:tags": "git push --follow-tags origin master",
+    "ci:validate": "rm -rf node_modules && npm ci && npm run validate"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "commitizen": "^4.0.3",
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "git-authors-cli": "^1.0.18",
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.2",
+    "prettier": "^1.18.2",
+    "standard-version": "^7.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.mdx": [
+      "prettier --write",
+      "git add"
+    ],
+    "src/**/*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
+}
